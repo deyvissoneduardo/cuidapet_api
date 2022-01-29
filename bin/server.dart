@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:cuidapet_api/application/config/application_config.dart';
 import 'package:cuidapet_api/application/middlewares/cors/cors_middlewares.dart';
 import 'package:cuidapet_api/application/middlewares/defatulContentType/default_content_type.dart';
-import 'package:shelf/shelf.dart';
+import 'package:cuidapet_api/application/middlewares/security/security_middleware.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf/shelf.dart' as shelf;
@@ -24,10 +25,12 @@ void main(List<String> args) async {
   final appConfig = ApplicationConfig();
   appConfig.loadConfigApplication(router);
 
-  // Configure a pipeline that logs requests.
-  final _handler = shelf.Pipeline()
+  final getIt = GetIt.I;
+
+  final _handler = const shelf.Pipeline()
       .addMiddleware(CorsMiddlewares().handler)
       .addMiddleware(DefaultContentType().handler)
+      .addMiddleware(SecurityMiddleware(log: getIt.get()).handler)
       .addMiddleware(shelf.logRequests())
       .addHandler(router);
 
