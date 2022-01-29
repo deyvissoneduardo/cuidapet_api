@@ -1,3 +1,5 @@
+import 'package:injectable/injectable.dart';
+
 import './i_logger.dart';
 import 'package:logger/logger.dart' as log;
 
