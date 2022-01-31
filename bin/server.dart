@@ -23,7 +23,7 @@ void main(List<String> args) async {
 
   final router = Router();
   final appConfig = ApplicationConfig();
-  appConfig.loadConfigApplication(router);
+  await appConfig.loadConfigApplication(router);
 
   final getIt = GetIt.I;
 

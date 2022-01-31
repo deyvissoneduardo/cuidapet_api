@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 class ApplicationConfig {
-  void loadConfigApplication(Router router) async {
+  Future<void> loadConfigApplication(Router router) async {
     await _loadEnv();
     _loadDatabaseConfig();
     _configLogger();
