@@ -11,8 +11,8 @@ import '../database/database_connection.dart' as _i4;
 import '../database/i_database_connection.dart' as _i3;
 import '../logger/i_logger.dart' as _i8;
 import '../modules/user/controller/auth_controller.dart' as _i11;
-import '../modules/user/data/i_user_repository.dart' as _i6;
-import '../modules/user/data/user_repository.dart' as _i7;
+import '../modules/user/repository/i_user_repository.dart' as _i6;
+import '../modules/user/repository/user_repository.dart' as _i7;
 import '../modules/user/service/i_user_service.dart' as _i9;
 import '../modules/user/service/user_service.dart' as _i10;
 import 'database_connection_configuration.dart'
