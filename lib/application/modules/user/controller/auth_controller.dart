@@ -34,7 +34,12 @@ class AuthController {
         user = await userService.loginWithEmailAndPassword(loginViewModel.login,
             loginViewModel.password, loginViewModel.supplierUser);
       } else {
-        user = User();
+        user = await userService.loginWithSocial(
+          loginViewModel.login,
+          loginViewModel.avatar,
+          loginViewModel.socialKey,
+          loginViewModel.socialType,
+        );
       }
       return Response.ok(jsonEncode(
         {'access_token': JwtHelpers.generateJWT(user.id!, user.supplierId)},

@@ -4,7 +4,7 @@ import 'package:cuidapet_api/application/exception/user_exists_exception.dart';
 import 'package:cuidapet_api/application/exception/user_notfound_exception.dart';
 import 'package:cuidapet_api/application/helpers/crypt_helper.dart';
 import 'package:cuidapet_api/application/logger/i_logger.dart';
-import 'package:cuidapet_api/application/modules/user/repository/database_exception.dart';
+import 'package:cuidapet_api/application/exception/database_exception.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -97,6 +97,57 @@ class UserRepository implements IUserRepository {
       }
     } on MySqlException catch (e, s) {
       log.error('Erro ao logar usuario', e, s);
+      throw DatabaseException(
+        message: e.message,
+        exception: e,
+      );
+    } finally {
+      await conn?.close();
+    }
+  }
+
+  @override
+  Future<User> loginByEmailSocialKey(
+      String email, String socialKey, String socialType) async {
+    MySqlConnection? conn;
+    try {
+      conn = await connection.openConnection();
+      var query = ''' 
+        SELECT * FROM 
+        usuario WHERE email = ?
+      ''';
+      final result = await conn.query(query, [email]);
+
+      if (result.isEmpty) {
+        throw UserNotfoundException(message: 'Usuario nao encontrado');
+      } else {
+        final dataMysql = result.first;
+        if (dataMysql['social_id'] == null ||
+            dataMysql['social_id'] != socialKey) {
+          await conn.query(
+            ''' 
+          UPDATE usuario
+          SET social_id = ?,
+              tipo_cadastro = ?
+          WHERE id = ? 
+          ''',
+            [socialKey, socialType, dataMysql['id']],
+          );
+        }
+        return User(
+          id: dataMysql['id'] as int,
+          email: dataMysql['email'],
+          password: (dataMysql['senha'] as Blob?).toString(),
+          registerType: dataMysql['tipo_usuaro'],
+          iosToken: (dataMysql['ios_token'] as Blob?).toString(),
+          androidToken: (dataMysql['android_token'] as Blob?).toString(),
+          refreshToken: (dataMysql['refresh_token'] as Blob?).toString(),
+          imageAvatar: (dataMysql['img_avatar'] as Blob?).toString(),
+          supplierId: dataMysql['fornecedor_id'],
+        );
+      }
+    } on MySqlException catch (e, s) {
+      log.error('Erro ao cadastra com rede social', e, s);
       throw DatabaseException(
         message: e.message,
         exception: e,
