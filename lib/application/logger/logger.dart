@@ -2,6 +2,7 @@ import './i_logger.dart';
 import 'package:logger/logger.dart' as log;
 
 class Logger implements ILogger {
+  // ignore: prefer_typing_uninitialized_variables
   late final _logger;
 
   Logger() {

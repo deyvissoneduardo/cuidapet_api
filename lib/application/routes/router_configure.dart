@@ -10,7 +10,9 @@ class RouterConfigure {
 
   RouterConfigure(this._router);
 
-  void configure() => _routers.forEach((r) {
-        r.configure(_router);
-      });
+  void configure(Router router) {
+    for (var r in _routers) {
+      r.configure(_router);
+    }
+  }
 }

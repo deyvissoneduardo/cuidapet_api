@@ -46,7 +46,7 @@ class UserService implements IUserService {
         imageAvatar: avatar,
         socialKey: socialKey,
         registerType: socialType,
-        password: DateTime.now().toString(),
+        password: '123qwe',
       );
       return await userRepository.createUser(user);
     }

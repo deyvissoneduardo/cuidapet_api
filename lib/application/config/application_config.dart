@@ -35,5 +35,5 @@ class ApplicationConfig {
   void _loadDependecies() => configureDependencies();
 
   void _loadRoutersConfigure(Router router) =>
-      RouterConfigure(router).configure();
+      RouterConfigure(router).configure(router);
 }
