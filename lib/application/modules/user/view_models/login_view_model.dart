@@ -14,6 +14,7 @@ class LoginViewModel extends RequestMapping {
   void map() {
     login = data['login'];
     password = data['password'];
+    socialLogin = data['social_login'];
     avatar = data['avatar'];
     socialType = data['social_type'];
     socialKey = data['social_key'];
